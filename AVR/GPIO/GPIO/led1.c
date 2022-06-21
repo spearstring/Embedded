@@ -15,10 +15,10 @@ int main()
 	
 	while (1)
 	{
-		PORTA = 0xFF;	// PROTA의 각 비트에 5V 출력	
-		_delay_ms(1000);
-		PORTA = 0x00;
-		_delay_ms(1000);
+		PORTA = 0xFF;	// PROTA 모두 1로 출력	
+		_delay_ms(1000);	// 1000ms 시간 지연
+		PORTA = 0x00;	// PROTA 모두 0으로 출력
+		_delay_ms(1000);	// 1000ms 시간 지연
 
 	}
 	

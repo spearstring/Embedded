@@ -13,7 +13,7 @@
 
 int main(void)
 {	
-	Byte buf[20];
+	Byte buf[20];			// 구구단을 담을 배열
 	
 	DDRA = 0xff;
 	DDRG = 0x0f;
@@ -28,7 +28,7 @@ int main(void)
 			for (int j = 1; j < 10; j++)
 			{
 				Lcd_Pos(0,0);
-				sprintf(buf, "%d x %d = %d", i, j, i * j);
+				sprintf(buf, "%d x %d = %d", i, j, i * j);		// sprintf를 이용하여 buf에 담고 구구단 출력
 				Lcd_STR(buf);
 				_delay_ms(700);
 				Lcd_Clear();
