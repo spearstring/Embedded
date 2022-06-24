@@ -32,12 +32,12 @@ int main(void)
 {
 	unsigned char RX_data =0;
 	
-	DDRE = 0xfe;
+	DDRE = 0xfe;		// Rx(입력 0), Tx(출력, 1)
 	DDRB = 0x80;		// PWM 출력
 	
 	UCSR0A = 1 << MPCM0;
-	UCSR0B = (1 << RXEN0) | (1 << TXEN0);
-	UCSR0C = (1 << UCSZ01) | (1 << UCSZ00);
+	UCSR0B = (1 << RXEN0) | (1 << TXEN0);		// Rx, Tx enable
+	UCSR0C = (1 << UCSZ01) | (1 << UCSZ00);		// 비동기 방식, No Parity bit, 1 Stop bit
 	UBRR0H = 0x00;
 	UBRR0L = 3;
 	

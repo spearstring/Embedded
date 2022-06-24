@@ -4,5 +4,5 @@
 
 lcd.c
 
-lcdTest2.c
+main.c
 

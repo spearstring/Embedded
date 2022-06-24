@@ -15,7 +15,7 @@ int main(void)
 {	
 	Byte buf[20];			// 구구단을 담을 배열
 	
-	DDRA = 0xff;
+	DDRF = 0xff;
 	DDRG = 0x0f;
 	
 	Lcd_Init();

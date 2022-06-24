@@ -8,86 +8,137 @@
 #include <avr/io.h>
 #include <util/delay.h>
 
-unsigned char keyScan();
-
-
-int main(void)
+unsigned init_keypad()
 {
-	unsigned char key;
-    DDRA = 0xf8;		// 0b 1111 0000 포트 A의 상위 4비트는 출력(row), 하위 4비트는 입력(col)
-	DDRC = 0xff;
-
-    while (1) 
-    {
-		key = keyScan();
-		if (key == '1')
-		{
-			PORTC = 0x01;
-		}
-    }
-	
-	return 0;
+	DDRA = 0xf8;		// 0b 1111 1000
+	PORTA = 0x07;		// 0b 0000 0111
 }
 
 unsigned char keyScan()
 {
-	PORTA = 0xf7;		// 0b 1111 0111
-	if (PINA == 0xf6)	// 0b 1111 0110
+	PORTA = 0x08;		// 0b 0000 1000
+	_delay_ms(1);
+	if((PINA & 0x07) == 0x01)
 	{
-		return '1';
+		 return '1';
 	}
-	else if(PINA == 0xfd)	// 0b 1111 1101
+	else if((PINA & 0x07) == 0x02)
 	{
-		return '2';
+		 return '2';
 	}
-	else if(PINA == 0xfb)	// 0b 1111 1011
-	{
+	else if((PINA & 0x07) == 0x04)
+	{ 
 		return '3';
 	}
 	_delay_ms(10);
 	
-	PORTA = 0xef;		// 0b 1110 ffff
-	if (PINA == 0xfe)	// 0b 1111 1110
+	PORTA = 0x10;		// 0x10
+	_delay_ms(1);
+	if((PINA & 0x07) == 0x01) 
 	{
 		return '4';
 	}
-	else if (PINA == 0xfd)	// 0b 1111 1101
+	else if((PINA & 0x07) == 0x02)
 	{
-		return '5';
+		 return '5';
 	}
-	else if (PINA = 0xfb)	// 0b 1111 1011
-	{
+	else if((PINA & 0x07) == 0x04)
+	{ 
 		return '6';
 	}
 	_delay_ms(10);
 	
-	PORTA = 0xdf;		// 0b 1101 ffff
-	if (PINA == 0xfe )
+	PORTA = 0x20;		// 0x20
+	_delay_ms(1);
+	if((PINA & 0x07) == 0x01)
 	{
-		return '7';
+		 return '7';
 	}
-	else if (PINA = 0xfd)
+	else if((PINA & 0x07) == 0x02)
 	{
-		return '8';
+		 return '8';
 	}
-	else if (PINA = 0xfb)
+	else if((PINA & 0x07) == 0x04)
 	{
-		return '9';
+		 return '9';
 	}
 	_delay_ms(10);
 	
-	PORTA = 0xbf;		// 0b 1011 ffff
-	if (PINA == 0xfe )	// 0b 1111 1110
+	PORTA = 0x40;		// 0x40
+	_delay_ms(1);
+	if((PINA & 0x07) == 0x01)
 	{
-		return '*';
+		 return '*';
 	}
-	else if (PINA = 0xfd)	// 0b 1111 1101
+	else if((PINA & 0x07) == 0x02)
 	{
-		return '0';
+		 return '0';
 	}
-	else if (PINA = 0xfb)	// 0b 1111 1011
+	else if((PINA & 0x07) == 0x04)
 	{
-		return '#';
+		 return '#';
 	}
 	_delay_ms(10);
+	
+	return 0;
+}
+
+int main(void)
+{
+	DDRC = 0xff;
+
+	while (1)
+	{
+		unsigned char key = keyScan();
+		if (key == '1')
+		{
+			PORTC = 0x01;
+		}
+		else if (key == '2')
+		{
+			PORTC = 0x02;
+		}
+		else if (key == '3')
+		{
+			PORTC = 0x03;
+		}
+		else if (key == '4')
+		{
+			PORTC = '0x04';
+		}
+		else if (key == '5')
+		{
+			PORTC = '0x05';
+		}
+		else if (key == '6')
+		{
+			PORTC = '0x06';
+		}
+		else if (key == '7')
+		{
+			PORTC = '0x07';	
+		}
+		else if (key == '8')
+		{
+			PORTC = '0x08';
+		}
+		else if (key == '9')
+		{
+			PORTC = '0x09';
+		}
+		else if (key == '*')
+		{
+			PORTC = '0x0a';
+		}
+		else if (key == '0')
+		{
+			PORTC = '0x0b';
+		}
+		else if (key == '#')
+		{
+			PORTC = '0x0c';
+		}
+	}
+	
+	return 0;
 }
