@@ -85,6 +85,7 @@ int main(void)
 	
 	unsigned char piano = 0;
 	
+	// 입출력 포트 설정
 	DDRB = 0x20;
 	PORTB &= ~0x20;
 	DDRC = 0xf0;
@@ -97,12 +98,14 @@ int main(void)
 	TCCR3C = 0x00;											// WGM(3:0)="1110", Fast PWM, 모드 14
 	TCNT3 = 0x0000;
 	
+	// UART 설정
 	UCSR0A = 1 << MPCM0;
 	UCSR0B = (1 << RXEN0) | (1 << TXEN0);
 	UCSR0C = (1 << UCSZ01) | (1 << UCSZ00);
 	UBRR0H = 0x00;
 	UBRR0L = 3;
 	
+	// 인터럽트 설정
 	EICRB = 1 << ISC41;
 	ETIMSK = 1 << INT4;
 	EIFR = 1 << INTF4;
@@ -112,6 +115,7 @@ int main(void)
 	Lcd_Init();
 	Lcd_Clear();
 	
+	// LCD 출력 문자열
 	Byte *str1 = "Doorlock system";
 	Byte str2[] = "Insert PW:";
 	Byte *str3 = "OPEN DOOR";
@@ -129,6 +133,8 @@ int main(void)
 		init_keypad();
 		
 		unsigned char key = keyscan();
+		
+		// 키패드를 눌렀을때 도어락 비밀번호 동작
 		if ((key >= '0' && key <='9') || (key == '*') || (key == '#'))
 		{
 			init_keypad();
@@ -140,6 +146,7 @@ int main(void)
 			Lcd_Pos(1,0);
 			Lcd_STR(str2);
 		
+			// 비밀번호 각자리가 맞을때 p 증가, w = 0
 			if (key == password[p])
 			{	
 				_delay_ms(100);
@@ -147,6 +154,7 @@ int main(void)
 				w = 0;
 			}	
 			
+			// 비밀번호 각 자리가 틀릴 때 w 증가, p = 0
 			else if (key != password[p])
 			{
 				_delay_ms(100);
@@ -154,6 +162,7 @@ int main(void)
 				w++;
 			}
 			
+			// 비밀번호 4자리를 모두 맞췄을때
 			if (p == 4)
 			{	
 				init_keypad();
@@ -172,6 +181,7 @@ int main(void)
 				_delay_ms(500);
 				TCCR1A = 1 << WGM30;
 				
+				// 스텝 모터 동작
 				for (i = 0; i < 5; i++)
 				{
 					PORTC = 0x30; // 1 step
@@ -188,6 +198,7 @@ int main(void)
 				
 			}
 			
+			// 비밀번호 4자리가 틀렸을 경우
 			if (w == 4)
 			{
 				init_keypad();
